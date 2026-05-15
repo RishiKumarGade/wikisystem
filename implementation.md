@@ -539,3 +539,103 @@ The login endpoint performs:
 ### Logout Flow
 
 Logout invalidates the active session by removing the authentication cookie.
+
+## Authentication Middleware
+
+Implemented centralized authentication middleware.
+
+### Protected Areas
+
+The middleware protects:
+
+- article pages
+- article APIs
+
+### Middleware Responsibilities
+
+The middleware performs:
+
+- JWT verification
+- route access enforcement
+- unauthenticated redirects
+- authenticated-user redirect handling
+
+### Architectural Benefit
+
+Centralized middleware prevents duplicated authentication checks across individual routes and reduces the risk of authorization inconsistencies.
+
+
+## Shared Authentication Form Component
+
+Implemented a reusable authentication form component supporting both:
+
+- login
+- registration
+
+### Design Goals
+
+The form component prioritizes:
+
+- simplicity
+- low duplication
+- maintainability
+- fast iteration
+
+### Client-Side Responsibilities
+
+The form manages:
+
+- loading states
+- API submission
+- error display
+- navigation after authentication
+
+
+## Authentication Pages
+
+Implemented:
+
+- login page
+- registration page
+
+### UI Goals
+
+The authentication pages prioritize:
+
+- clarity
+- simplicity
+- fast onboarding
+- low visual complexity
+
+Authentication flows are intentionally minimal to keep focus on the core wiki functionality.
+
+
+## Current User Helper
+
+Implemented a reusable current-user utility.
+
+### Purpose
+
+The helper centralizes:
+
+- session extraction
+- authenticated user lookup
+- JWT decoding integration
+
+This avoids duplicated authentication lookup logic across pages and services.
+
+
+## End-to-End Authentication Verification
+
+Verified complete authentication flow including:
+
+- registration
+- login
+- session persistence
+- middleware protection
+- authenticated page access
+- logout behavior
+
+### Security Verification
+
+Confirmed that unauthenticated users cannot access protected article routes.
