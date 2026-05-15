@@ -9,6 +9,17 @@ import {
   updateArticle,
 } from './article.repository'
 
+import { prisma } from '@/lib/db/prisma'
+
+import {
+  createArticleVersion,
+} from '@/modules/versions/version.repository'
+
+import {
+  canEditPublishedArticle,
+  canPublishArticle,
+} from './article.permissions'
+
 import {
   canDeleteArticle,
   canEditDraft,
@@ -140,4 +151,155 @@ export async function deleteDraftArticle(
   }
 
   return deleteArticle(articleId)
+}
+
+export async function publishArticle(
+  articleId: string,
+  user: {
+    id: string
+    role: string
+  }
+) {
+  const article =
+    await findArticleById(
+      articleId
+    )
+
+  if (!article) {
+    throw new Error(
+      'Article not found'
+    )
+  }
+
+  const canPublish =
+    canPublishArticle(
+      user as never,
+      article
+    )
+
+  if (!canPublish) {
+    throw new Error(
+      'You cannot publish this article'
+    )
+  }
+
+  return prisma.$transaction(
+    async (tx) => {
+      const versionNumber = 1
+
+      await tx.articleVersion.create({
+        data: {
+          articleId:
+            article.id,
+
+          versionNumber,
+
+          titleSnapshot:
+            article.title,
+
+          bodySnapshot:
+            article.body,
+
+          editedById:
+            user.id,
+        },
+      })
+
+      return tx.article.update({
+        where: {
+          id: article.id,
+        },
+
+        data: {
+          status:
+            ArticleStatus.PUBLISHED,
+
+          currentVersion:
+            versionNumber,
+
+          publishedAt:
+            new Date(),
+        },
+      })
+    }
+  )
+}
+
+export async function updatePublishedArticle(
+  articleId: string,
+  user: {
+    id: string
+    role: string
+  },
+  input: UpdateDraftInput
+) {
+  const article =
+    await findArticleById(
+      articleId
+    )
+
+  if (!article) {
+    throw new Error(
+      'Article not found'
+    )
+  }
+
+  const canEdit =
+    canEditPublishedArticle(
+      user as never,
+      article
+    )
+
+  if (!canEdit) {
+    throw new Error(
+      'You cannot edit this article'
+    )
+  }
+
+  return prisma.$transaction(
+    async (tx) => {
+      const nextVersion =
+        article.currentVersion +
+        1
+
+      await tx.articleVersion.create({
+        data: {
+          articleId:
+            article.id,
+
+          versionNumber:
+            nextVersion,
+
+          titleSnapshot:
+            input.title,
+
+          bodySnapshot:
+            input.body,
+
+          editedById:
+            user.id,
+        },
+      })
+
+      return tx.article.update({
+        where: {
+          id: article.id,
+        },
+
+        data: {
+          title:
+            input.title,
+
+          body:
+            input.body,
+
+          category:
+            input.category,
+
+          currentVersion:
+            nextVersion,
+        },
+      })
+    }
+  )
 }

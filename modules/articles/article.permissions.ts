@@ -59,3 +59,26 @@ export function canDeleteArticle(
     article.creatorId === user.id
   )
 }
+
+
+export function canEditPublishedArticle(
+  user: User,
+  article: Article
+) {
+  return (
+    article.status ===
+    'PUBLISHED'
+  )
+}
+
+export function canPublishArticle(
+  user: User,
+  article: Article
+) {
+  return (
+    article.status ===
+      'DRAFT' &&
+    article.creatorId === user.id
+  )
+}
+

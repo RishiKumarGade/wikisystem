@@ -853,3 +853,105 @@ The dashboard currently provides:
 
 Article listing functionality will be added in a later phase.
 
+---
+
+# Phase 5 — Publishing & Version History
+
+## Version Repository Layer
+
+Implemented persistence abstractions for immutable article version storage.
+
+### Responsibilities
+
+The version repository manages:
+
+- snapshot creation
+- version retrieval
+- historical version listing
+
+### Ordering Strategy
+
+Version history is returned in descending version order to prioritize recent revisions.
+
+## Read-Time Diff Generation
+
+Implemented dynamic diff generation using jsdiff.
+
+### Important Architectural Decision
+
+The system stores immutable snapshots rather than delta patches.
+
+Diffs are generated dynamically during read operations.
+
+### Why this approach was chosen
+
+This strategy provides:
+
+- simpler persistence
+- easier integrity guarantees
+- simpler rollback support
+- reduced replay complexity
+
+Storage duplication was considered an acceptable tradeoff for significantly simpler version-management logic.
+
+## Published Article Collaboration Rules
+
+Extended the permission system to support collaborative editing for published articles.
+
+### Collaboration Model
+
+Published articles may be edited by any authenticated user.
+
+This follows the wiki-style collaborative editing requirement.
+
+### Draft Isolation
+
+Drafts remain private and editable only by their creator until publication occurs.
+
+
+## Publish Workflow
+
+Implemented the article publication workflow.
+
+### Publication Responsibilities
+
+Publishing performs:
+
+- immutable version snapshot creation
+- article status transition
+- version-number initialization
+- publication timestamp assignment
+
+### Transactional Integrity
+
+Publishing executes within a database transaction to prevent partial state corruption.
+
+This guarantees that:
+
+- versions cannot exist without publication
+- publication cannot occur without initial version creation
+
+
+## Published Edit Workflow
+
+Implemented collaborative published-article editing workflows.
+
+### Workflow Behavior
+
+Published edits perform:
+
+- immutable snapshot creation
+- version-number incrementation
+- latest projection updates
+
+### Dual-Model Architecture
+
+The system maintains:
+
+#### Article Table
+
+Stores the latest/current article projection optimized for reads and search.
+
+#### ArticleVersion Table
+
+Stores immutable historical snapshots optimized for audit history and version browsing.
