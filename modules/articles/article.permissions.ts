@@ -82,3 +82,12 @@ export function canPublishArticle(
   )
 }
 
+
+
+export function canArchiveArticle(
+  user: User
+) {
+  return (
+    user.role === 'EDITOR'
+  )
+}

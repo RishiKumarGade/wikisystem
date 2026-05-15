@@ -88,3 +88,18 @@ export async function countArticles(
     where,
   })
 }
+
+export async function archiveArticle(
+  id: string
+) {
+  return prisma.article.update({
+    where: {
+      id,
+    },
+
+    data: {
+      status:
+        ArticleStatus.ARCHIVED,
+    },
+  })
+}

@@ -85,3 +85,42 @@ export async function loginUser(
     token,
   }
 }
+
+
+import {
+  UserRole,
+} from '@prisma/client'
+
+import {
+  isEditor,
+} from '@/modules/auth/auth.permissions'
+
+import {
+  listUsers,
+  updateUserRole,
+} from './user.repository'
+
+export async function getAllUsers(
+  user: {
+    id: string
+    role: string
+  }
+) {
+  if (!isEditor(user)) {
+    throw new Error(
+      'Only editors can manage users'
+    )
+  }
+
+  return listUsers()
+}
+
+export async function promoteUserToEditor(
+  currentUser: {
+    id: string
+    role: string
+  },
+
+  targetUserId: string
+) {
+}

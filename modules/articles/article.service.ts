@@ -10,6 +10,7 @@ import {
 } from './article.queries'
 
 import {
+  archiveArticle,
   countArticles,
   listArticles,
 } from './article.repository'
@@ -28,6 +29,7 @@ import {
 } from '@/modules/versions/version.repository'
 
 import {
+  canArchiveArticle,
   canEditPublishedArticle,
   canPublishArticle,
 } from './article.permissions'
@@ -387,4 +389,38 @@ export async function listPublishedArticles(
         ),
     },
   }
+}
+
+export async function archivePublishedArticle(
+  articleId: string,
+  user: {
+    id: string
+    role: string
+  }
+) {
+  const article =
+    await findArticleById(
+      articleId
+    )
+
+  if (!article) {
+    throw new Error(
+      'Article not found'
+    )
+  }
+
+  const canArchive =
+    canArchiveArticle(
+      user as never
+    )
+
+  if (!canArchive) {
+    throw new Error(
+      'You cannot archive articles'
+    )
+  }
+
+  return archiveArticle(
+    articleId
+  )
 }

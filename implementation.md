@@ -1190,3 +1190,87 @@ The error boundary provides graceful recovery behavior for rendering failures th
 ## Loading States
 
 Implemented global loading UI for asynchronous route transitions and server-rendered loading states.
+---
+
+# Phase 8 — Product Completion
+
+## Landing Page
+
+Implemented the primary application entrypoint and onboarding experience.
+
+### Goals
+
+The landing page provides:
+
+- clear product positioning
+- authentication entrypoints
+- authenticated dashboard access
+
+## Shared Navigation System
+
+Implemented shared application navigation with session-aware controls.
+
+### Navigation Features
+
+The navigation system supports:
+
+- authenticated navigation
+- logout behavior
+- dashboard access
+- draft creation shortcuts
+
+## Archive Workflow
+
+Implemented article archival workflows.
+
+### Archive Permissions
+
+Only editor-role users may archive articles.
+
+### Lifecycle Semantics
+
+Archived articles remain historically accessible while being removed from active collaborative workflows.
+
+## Archive UI
+
+Implemented archive controls with confirmation safeguards for lifecycle management operations.
+
+## Environment Template
+
+Added `.env.example` to simplify environment setup and deployment onboarding.
+
+## Global Not Found Handling
+
+Implemented centralized not-found handling for invalid routes and missing resources.
+
+
+## Application Metadata
+
+Added global application metadata for browser integration and deployment polish.
+
+
+## Repository Hygiene
+
+Updated ignore rules for:
+
+- environment secrets
+- SQLite journals
+- build artifacts
+
+
+## Editor User Management
+
+Implemented editor-only user-management workflows.
+
+### Current Capabilities
+
+Editors may now:
+
+- browse all users
+- promote contributors to editors
+
+### Security Model
+
+Role-management operations are enforced server-side and require existing editor privileges.
+
+Public self-assignment of privileged roles is intentionally prohibited to prevent privilege escalation.
