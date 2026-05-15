@@ -1068,3 +1068,66 @@ The listing API currently supports:
 ### Search Scope
 
 Search operates only on the latest published article projection and excludes historical versions.
+
+## Shared Article Card Component
+
+Implemented reusable article-card rendering for article listings.
+
+### Design Goals
+
+The card component standardizes:
+
+- article preview rendering
+- metadata display
+- navigation behavior
+- version visibility
+
+
+## Search & Filter Controls
+
+Implemented URL-driven article search and filtering controls.
+
+### Architectural Benefit
+
+Search state is persisted within URL query parameters rather than local component state.
+
+This enables:
+
+- shareable URLs
+- browser history integration
+- refresh persistence
+- server-side rendering compatibility
+
+## Production Article Dashboard
+
+Implemented the primary article-discovery experience.
+
+### Current Features
+
+The dashboard now supports:
+
+- published article browsing
+- full-text search
+- category filtering
+- pagination
+- article navigation
+
+### Visibility Model
+
+Only published articles appear within global listings and search results.
+
+## Visual Diff Rendering
+
+Implemented visual historical diff rendering for article versions.
+
+### Diff Behavior
+
+Version diffs are generated dynamically from immutable snapshots.
+
+### Rendering Semantics
+
+The diff viewer visually distinguishes:
+
+- added content
+- removed content
+- unchanged content
