@@ -12,7 +12,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum UserRole {
   CONTRIBUTOR
   EDITOR
@@ -47,4 +46,55 @@ model User {
   edits    ArticleVersion[] @relation("VersionEditor")
 }
 
+
+model Article {
+  id String @id @default(cuid())
+
+  title String
+  body  String
+
+  category ArticleCategory
+
+  status ArticleStatus @default(DRAFT)
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  currentVersion Int @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+
+  versions ArticleVersion[]
+
+  @@index([status])
+  @@index([category])
+  @@index([updatedAt])
+  @@index([status, category])
+}
+
+model ArticleVersion {
+  id String @id @default(cuid())
+
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  versionNumber Int
+
+  titleSnapshot String
+  bodySnapshot  String
+
+  editedById String
+  editedBy   User @relation("VersionEditor", fields: [editedById], references: [id])
+
+  editSummary String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([articleId, versionNumber])
+
+  @@index([articleId])
+  @@index([createdAt])
+}
 
