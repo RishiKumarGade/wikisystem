@@ -424,3 +424,56 @@ export async function archivePublishedArticle(
     articleId
   )
 }
+
+export async function listArchivedArticles(
+  query: ArticleListQuery
+) {
+  const where =
+    buildArticleWhereClause({
+      ...query,
+
+      status:
+        ArticleStatus.ARCHIVED,
+    })
+
+  const orderBy =
+    buildSortClause(query)
+
+  const pagination =
+    buildPagination(query)
+
+  const [
+    articles,
+    totalCount,
+  ] = await Promise.all([
+    listArticles({
+      where,
+      orderBy,
+      ...pagination,
+    }),
+
+    countArticles(where),
+  ])
+
+  return {
+    articles,
+
+    pagination: {
+      page:
+        query.page ?? 1,
+
+      pageSize:
+        query.pageSize ??
+        10,
+
+      totalCount,
+
+      totalPages:
+        Math.ceil(
+          totalCount /
+            (query.pageSize ??
+              10)
+        ),
+    },
+  }
+}

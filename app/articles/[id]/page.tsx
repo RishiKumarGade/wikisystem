@@ -7,6 +7,8 @@ import {
   getArticleById,
 } from '@/modules/articles/article.service'
 import { PublishButton } from '@/components/article/publish-button'
+import { ArchiveButton } from '@/components/article/archive-button'
+import { isEditor } from '@/modules/auth/auth.permissions'
 
 type Params = {
   params: Promise<{
@@ -69,19 +71,30 @@ export default async function ArticlePage({
       </article>
 
      <div className="mt-10 flex gap-3">
-  <Link
-    href={`/articles/${article.id}/edit`}
-    className="rounded-lg border px-4 py-2"
-  >
-    {article.status ===
-    'DRAFT'
-      ? 'Edit Draft'
-      : 'Edit Article'}
-  </Link>
+  {article.status !==
+  'ARCHIVED' ? (
+    <Link
+      href={`/articles/${article.id}/edit`}
+      className="rounded-lg border px-4 py-2"
+    >
+      {article.status ===
+      'DRAFT'
+        ? 'Edit Draft'
+        : 'Edit Article'}
+    </Link>
+  ) : null}
 
   {article.status ===
   'DRAFT' ? (
     <PublishButton
+      articleId={article.id}
+    />
+  ) : null}
+
+  {article.status ===
+    'PUBLISHED' &&
+  isEditor(user) ? (
+    <ArchiveButton
       articleId={article.id}
     />
   ) : null}

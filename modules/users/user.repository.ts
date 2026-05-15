@@ -48,7 +48,6 @@ export async function listUsers() {
     },
   })
 }
-
 export async function updateUserRole(
   userId: string,
   role: UserRole
@@ -60,6 +59,13 @@ export async function updateUserRole(
 
     data: {
       role,
+    },
+
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      createdAt: true,
     },
   })
 }

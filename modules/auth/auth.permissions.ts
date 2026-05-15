@@ -4,7 +4,7 @@ import {
 
 export function isEditor(
   user: {
-    role: string
+    role: UserRole
   }
 ) {
   return (

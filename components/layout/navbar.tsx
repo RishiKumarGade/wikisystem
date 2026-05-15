@@ -48,6 +48,12 @@ export async function Navbar() {
                                 </Link>
                             ) : null}
 
+                            <Link
+                                href="/articles/archived"
+                                className="text-sm text-gray-600 hover:text-black"
+                            >
+                                Archived
+                            </Link>
                             <LogoutButton />
                         </>
                     ) : (

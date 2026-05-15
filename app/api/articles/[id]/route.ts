@@ -6,11 +6,13 @@ import {
   deleteDraftArticle,
   getArticleById,
   updateDraftArticle,
+  updatePublishedArticle,
 } from '@/modules/articles/article.service'
 
 import {
   updateDraftSchema,
 } from '@/modules/articles/article.validators'
+import { findArticleById } from '@/modules/articles/article.repository'
 
 type Params = {
   params: Promise<{
@@ -100,14 +102,36 @@ export async function PUT(
       await params
 
     const article =
-      await updateDraftArticle(
-        id,
-        user,
-        validatedData
+      await findArticleById(id)
+
+    if (!article) {
+      return NextResponse.json(
+        {
+          error:
+            'Article not found',
+        },
+        {
+          status: 404,
+        }
       )
+    }
+
+    const updatedArticle =
+      article.status ===
+      'DRAFT'
+        ? await updateDraftArticle(
+            id,
+            user,
+            validatedData
+          )
+        : await updatePublishedArticle(
+            id,
+            user,
+            validatedData
+          )
 
     return NextResponse.json(
-      article
+      updatedArticle
     )
   } catch (error) {
     console.error(error)
