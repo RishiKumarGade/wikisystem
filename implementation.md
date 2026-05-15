@@ -99,3 +99,92 @@ Initialized:
 - Environment configuration
 - Core dependencies
 - Utility foundation
+
+---
+
+# Phase 2 — Database & Persistence Architecture
+
+## Prisma Initialization
+
+Initialized Prisma ORM with SQLite datasource.
+
+### Rationale
+
+SQLite was chosen because:
+
+- zero infrastructure setup
+- persistent local storage
+- transactional guarantees
+- reviewer-friendly execution
+- fast development iteration
+
+Prisma was selected to provide:
+
+- type-safe database access
+- schema-driven development
+- relational modeling
+- migration management
+- transactional APIs
+
+
+## Domain Enums
+
+Created strongly-typed domain enums for:
+
+- UserRole
+- ArticleStatus
+- ArticleCategory
+
+### Why enums instead of free-text?
+
+Enums guarantee:
+
+- valid state transitions
+- query consistency
+- safer filtering/sorting
+- prevention of invalid business states
+
+This is especially important for:
+- article lifecycle management
+- role-based authorization
+- category filtering
+
+
+
+## User Model
+
+Created the `User` model.
+
+### Responsibilities
+
+The user entity is responsible for:
+
+- authentication identity
+- authorization role ownership
+- article ownership
+- version edit attribution
+
+### Important Design Decisions
+
+#### Unique Email Constraint
+
+Email addresses are globally unique to prevent duplicate accounts.
+
+#### Role System
+
+Two roles are supported:
+
+- CONTRIBUTOR
+- EDITOR
+
+#### Separate Relationships
+
+The system separately tracks:
+
+- articles created by a user
+- article versions edited by a user
+
+This distinction becomes important for:
+- audit history
+- attribution
+- permissions
