@@ -639,3 +639,93 @@ Verified complete authentication flow including:
 ### Security Verification
 
 Confirmed that unauthenticated users cannot access protected article routes.
+
+
+---
+
+# Phase 4 — Draft Article System
+
+## Article Module Structure
+
+Created a dedicated article module to encapsulate:
+
+- article persistence
+- business workflows
+- validation
+- permissions
+- querying
+- lifecycle management
+
+### Architectural Goal
+
+The article module centralizes all article-domain logic to prevent business rules from leaking into route handlers or UI components.
+
+
+## Article Input Types
+
+Implemented explicit article input types for service-layer boundaries.
+
+### Architectural Benefit
+
+Strongly typed service inputs improve:
+
+- maintainability
+- refactor safety
+- service isolation
+- validation consistency
+
+
+## Article Validation
+
+Implemented centralized article validation schemas.
+
+### Validation Rules
+
+The system validates:
+
+- non-empty titles
+- non-empty bodies
+- valid categories
+- whitespace-only rejection
+
+### Category Validation
+
+Categories are validated against strict enum values to prevent invalid or arbitrary category submissions.
+
+
+## Centralized Permission Layer
+
+Implemented centralized article permission utilities.
+
+### Current Permission Rules
+
+#### Draft Visibility
+
+Draft articles are visible only to their creator.
+
+#### Draft Editing
+
+Only the creator may edit a draft article.
+
+#### Deletion Rules
+
+- editors may delete any article
+- contributors may delete only their own drafts
+
+### Architectural Benefit
+
+Permission rules are centralized to prevent authorization logic duplication and reduce security inconsistencies.
+
+## Article Repository Layer
+
+Implemented repository abstractions for article persistence.
+
+### Repository Responsibilities
+
+The repository layer handles only:
+
+- article reads
+- article writes
+- database persistence operations
+
+Business rules, authorization, and validation remain outside the persistence layer.
