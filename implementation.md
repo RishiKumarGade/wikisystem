@@ -729,3 +729,72 @@ The repository layer handles only:
 - database persistence operations
 
 Business rules, authorization, and validation remain outside the persistence layer.
+
+
+## Article Service Layer
+
+Implemented centralized article business workflows.
+
+### Current Responsibilities
+
+The article service currently manages:
+
+- draft creation
+- draft updates
+- article visibility checks
+- draft deletion
+- authorization enforcement
+
+### Architectural Principle
+
+The service layer orchestrates:
+
+- repository access
+- permission validation
+- lifecycle rules
+- workflow integrity
+
+Persistence concerns remain isolated within repositories.
+
+
+## Draft Creation API
+
+Implemented draft article creation endpoint.
+
+### Workflow
+
+The endpoint performs:
+
+1. authenticated-user lookup
+2. request validation
+3. draft creation workflow execution
+4. article persistence
+
+### Architectural Goal
+
+Route handlers remain intentionally lightweight and delegate business logic to service-layer workflows.
+
+## Article Visibility Enforcement
+
+Implemented secure article retrieval workflows.
+
+### Draft Privacy Enforcement
+
+Draft articles are accessible only to their creator.
+
+This rule is enforced server-side within the service layer rather than relying on UI visibility controls.
+
+## Draft Editing & Deletion APIs
+
+Implemented:
+
+- draft update endpoint
+- draft deletion endpoint
+
+### Permission Enforcement
+
+Draft editing and deletion permissions are enforced within the service layer before persistence operations execute.
+
+### Security Model
+
+Authorization checks are performed server-side regardless of UI visibility behavior.
