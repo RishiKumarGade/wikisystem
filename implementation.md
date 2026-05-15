@@ -1008,3 +1008,63 @@ Users may now:
 - inspect edit chronology
 - view editor attribution
 - navigate historical snapshots
+
+---
+
+# Phase 6 — Search, Listing & Pagination
+
+## Centralized Query Composition
+
+Implemented reusable article query utilities for:
+
+- filtering
+- search
+- sorting
+- pagination
+
+### Architectural Benefit
+
+Centralized query composition prevents duplicated filtering logic and keeps listing behavior consistent across APIs and UI pages.
+
+## Article Listing Repository Support
+
+Extended the repository layer to support:
+
+- paginated listing
+- filtered retrieval
+- total-count queries
+
+### Pagination Strategy
+
+Separate count queries are used to calculate pagination metadata accurately.
+
+## Published Article Listing Workflow
+
+Implemented paginated published-article listing workflows.
+
+### Visibility Enforcement
+
+Only published articles are included in global listing and search operations.
+
+Draft visibility restrictions remain enforced.
+
+### Performance Optimization
+
+Pagination count queries and article retrieval queries execute concurrently to reduce total request latency.
+
+## Published Article Listing API
+
+Implemented searchable and paginated published-article retrieval APIs.
+
+### Supported Features
+
+The listing API currently supports:
+
+- search
+- category filtering
+- pagination
+- sorting
+
+### Search Scope
+
+Search operates only on the latest published article projection and excludes historical versions.

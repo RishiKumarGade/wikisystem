@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db/prisma'
 import {
   ArticleCategory,
   ArticleStatus,
+  Prisma,
 } from '@prisma/client'
 
 export async function createDraft(
@@ -55,5 +56,35 @@ export async function deleteArticle(
     where: {
       id,
     },
+  })
+}
+
+export async function listArticles(
+  args: {
+    where?: Prisma.ArticleWhereInput
+
+    orderBy?: Prisma.ArticleOrderByWithRelationInput
+
+    skip?: number
+    take?: number
+  }
+) {
+  return prisma.article.findMany({
+    where: args.where,
+
+    orderBy:
+      args.orderBy,
+
+    skip: args.skip,
+
+    take: args.take,
+  })
+}
+
+export async function countArticles(
+  where?: Prisma.ArticleWhereInput
+) {
+  return prisma.article.count({
+    where,
   })
 }

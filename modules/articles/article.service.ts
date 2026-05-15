@@ -3,6 +3,18 @@ import {
 } from '@prisma/client'
 
 import {
+  buildArticleWhereClause,
+  buildPagination,
+  buildSortClause,
+  type ArticleListQuery,
+} from './article.queries'
+
+import {
+  countArticles,
+  listArticles,
+} from './article.repository'
+
+import {
   createDraft,
   deleteArticle,
   findArticleById,
@@ -302,4 +314,58 @@ export async function updatePublishedArticle(
       })
     }
   )
+}
+
+
+export async function listPublishedArticles(
+  query: ArticleListQuery
+) {
+  const where =
+    buildArticleWhereClause({
+      ...query,
+
+      status:
+        ArticleStatus.PUBLISHED,
+    })
+
+  const orderBy =
+    buildSortClause(query)
+
+  const pagination =
+    buildPagination(query)
+
+  const [
+    articles,
+    totalCount,
+  ] = await Promise.all([
+    listArticles({
+      where,
+      orderBy,
+      ...pagination,
+    }),
+
+    countArticles(where),
+  ])
+
+  return {
+    articles,
+
+    pagination: {
+      page:
+        query.page ?? 1,
+
+      pageSize:
+        query.pageSize ??
+        10,
+
+      totalCount,
+
+      totalPages:
+        Math.ceil(
+          totalCount /
+            (query.pageSize ??
+              10)
+        ),
+    },
+  }
 }
