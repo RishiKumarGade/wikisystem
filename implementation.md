@@ -798,3 +798,58 @@ Draft editing and deletion permissions are enforced within the service layer bef
 ### Security Model
 
 Authorization checks are performed server-side regardless of UI visibility behavior.
+
+## Draft Creation Page
+
+Implemented the draft article creation page.
+
+### UX Goals
+
+The page prioritizes:
+
+- fast article authoring
+- minimal friction
+- clear editing workflow
+
+## Article Detail Page
+
+Implemented secure article detail rendering.
+
+### Security Model
+
+Article visibility rules are enforced through the centralized service layer before rendering occurs.
+
+### UI Goals
+
+The detail page prioritizes:
+
+- readability
+- minimal distraction
+- quick access to editing workflows
+
+## Draft Editing Page
+
+Implemented the draft editing interface.
+
+### Workflow
+
+The edit page preloads the current article state and reuses the shared article form component.
+
+### Architectural Benefit
+
+Shared create/edit UI components reduce duplication and maintain consistent editing behavior.
+
+## Initial Dashboard UI
+
+Implemented the initial authenticated dashboard experience.
+
+### Current Responsibilities
+
+The dashboard currently provides:
+
+- authenticated landing experience
+- navigation entrypoint
+- draft creation access
+
+Article listing functionality will be added in a later phase.
+
