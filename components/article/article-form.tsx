@@ -13,6 +13,7 @@ type ArticleFormProps = {
   articleId?: string
 
   initialValues?: {
+    currentVersion: number
     title: string
     body: string
     category: ArticleCategory
@@ -36,6 +37,11 @@ export function ArticleForm({
       initialValues?.body ?? ''
     )
 
+    const [currentVersion] =
+  useState(
+    initialValues?.currentVersion ??
+      0
+  )
   const [category, setCategory] =
     useState<ArticleCategory>(
       initialValues?.category ??
@@ -76,6 +82,7 @@ export function ArticleForm({
             title,
             body,
             category,
+            currentVersion
           }),
         }
       )

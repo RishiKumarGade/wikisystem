@@ -25,7 +25,7 @@ async function verifyToken(token: string) {
   }
 }
 
-export async function middleware(
+export async function proxy(
   request: NextRequest
 ) {
   const token =

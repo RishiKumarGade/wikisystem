@@ -12,4 +12,6 @@ export type UpdateDraftInput = {
   title: string
   body: string
   category: ArticleCategory
+
+  currentVersion: number
 }

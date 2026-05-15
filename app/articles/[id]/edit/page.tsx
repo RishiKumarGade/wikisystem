@@ -55,6 +55,7 @@ export default async function EditArticlePage({
         mode="edit"
         articleId={article.id}
         initialValues={{
+          currentVersion:article.currentVersion,
           title:
             article.title,
 

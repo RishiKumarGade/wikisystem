@@ -104,6 +104,14 @@ export async function updateDraftArticle(
       'Article not found'
     )
   }
+  if (
+  article.currentVersion !==
+  input.currentVersion
+) {
+  throw new Error(
+    'This article was updated by another user. Please refresh and try again.'
+  )
+}
 
   if (
     article.status !==
@@ -113,6 +121,8 @@ export async function updateDraftArticle(
       'Only draft articles can be edited here'
     )
   }
+
+  
 
   const canEdit =
     canEditDraft(
@@ -255,6 +265,15 @@ export async function updatePublishedArticle(
       'Article not found'
     )
   }
+
+  if (
+  article.currentVersion !==
+  input.currentVersion
+) {
+  throw new Error(
+    'This article was updated by another user. Please refresh and try again.'
+  )
+}
 
   const canEdit =
     canEditPublishedArticle(

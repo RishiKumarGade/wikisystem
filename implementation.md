@@ -1131,3 +1131,62 @@ The diff viewer visually distinguishes:
 - added content
 - removed content
 - unchanged content
+
+---
+
+# Phase 7 — Production Hardening
+
+## Optimistic Concurrency Control
+
+Implemented optimistic concurrency infrastructure for collaborative editing safety.
+
+### Problem Addressed
+
+Without concurrency protection:
+
+- stale editors may overwrite newer edits
+- collaborative updates may silently lose data
+
+### Concurrency Strategy
+
+Clients now submit the article version they edited against.
+
+The server rejects updates when the stored version no longer matches the client’s expected version.
+
+## Concurrency Validation
+
+Extended article update validation to require explicit version metadata for collaborative editing protection.
+
+## Stale-Write Protection
+
+Implemented server-side stale-update detection.
+
+### Behavior
+
+Update requests are rejected when:
+
+- the client edits an outdated version
+- another user has already modified the article
+
+### Architectural Benefit
+
+This prevents silent overwrites during collaborative editing workflows.
+
+
+## Client-Side Concurrency Metadata
+
+Article editing forms now submit the version number being edited.
+
+This enables server-side stale-write detection during collaborative editing workflows.
+
+## Global Error Boundary
+
+Implemented a global React error boundary for render-time failure handling.
+
+### Purpose
+
+The error boundary provides graceful recovery behavior for rendering failures that cannot be handled through async try/catch logic.
+
+## Loading States
+
+Implemented global loading UI for asynchronous route transitions and server-rendered loading states.

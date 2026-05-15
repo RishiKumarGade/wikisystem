@@ -22,4 +22,7 @@ export const createDraftSchema =
   })
 
 export const updateDraftSchema =
-  createDraftSchema
+  createDraftSchema.extend({
+    currentVersion:
+      z.number().int().min(1),
+  })
