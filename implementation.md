@@ -428,3 +428,114 @@ Created a dedicated user module to encapsulate:
 ### Architectural Reasoning
 
 User-related responsibilities are isolated from UI and route handlers to maintain clean service boundaries.
+
+## Authentication Validation Layer
+
+Implemented centralized validation schemas for:
+
+- user registration
+- user login
+
+### Why centralized validation?
+
+Validation schemas provide:
+
+- consistent request validation
+- reusable business constraints
+- safer API boundaries
+- cleaner route handlers
+
+### Validation Strategy
+
+Input validation occurs before business logic execution to ensure invalid requests are rejected early.
+
+## User Repository Layer
+
+Implemented repository abstractions for user persistence operations.
+
+### Repository Responsibilities
+
+The repository layer is responsible only for:
+
+- database reads
+- database writes
+- persistence concerns
+
+### Important Architectural Constraint
+
+Business rules and authentication workflows are intentionally excluded from the repository layer.
+
+This separation prevents persistence logic from becoming tightly coupled to application behavior.
+
+
+## Authentication Service Layer
+
+Implemented authentication business workflows within the user service layer.
+
+### Responsibilities
+
+The authentication service manages:
+
+- registration workflows
+- login workflows
+- duplicate-account prevention
+- password verification
+- JWT generation
+
+### Security Decisions
+
+#### Password Verification
+
+Passwords are verified using bcrypt hash comparison.
+
+#### Duplicate Account Prevention
+
+Email uniqueness is enforced both:
+
+- at the database layer
+- at the service layer
+
+#### Enumeration Protection
+
+Authentication failures intentionally return generic error messages to avoid leaking account existence information.
+
+## Registration API
+
+Implemented authenticated registration endpoint.
+
+### Registration Workflow
+
+The endpoint performs:
+
+1. request validation
+2. duplicate account checks
+3. password hashing
+4. user creation
+5. JWT issuance
+6. secure session cookie creation
+
+### Session Storage Strategy
+
+Authentication tokens are stored using HTTP-only cookies.
+
+This prevents client-side JavaScript access to authentication tokens and improves session security.
+
+## Authentication APIs
+
+Implemented:
+
+- login endpoint
+- logout endpoint
+
+### Login Flow
+
+The login endpoint performs:
+
+- credential validation
+- password verification
+- JWT issuance
+- session cookie creation
+
+### Logout Flow
+
+Logout invalidates the active session by removing the authentication cookie.
