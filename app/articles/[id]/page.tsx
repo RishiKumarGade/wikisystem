@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/lib/auth/current-user'
 import {
   getArticleById,
 } from '@/modules/articles/article.service'
+import { PublishButton } from '@/components/article/publish-button'
 
 type Params = {
   params: Promise<{
@@ -67,14 +68,31 @@ export default async function ArticlePage({
         {article.body}
       </article>
 
-      <div className="mt-10 flex gap-3">
-        <Link
-          href={`/articles/${article.id}/edit`}
-          className="rounded-lg border px-4 py-2"
-        >
-          Edit Draft
-        </Link>
-      </div>
+     <div className="mt-10 flex gap-3">
+  <Link
+    href={`/articles/${article.id}/edit`}
+    className="rounded-lg border px-4 py-2"
+  >
+    {article.status ===
+    'DRAFT'
+      ? 'Edit Draft'
+      : 'Edit Article'}
+  </Link>
+
+  {article.status ===
+  'DRAFT' ? (
+    <PublishButton
+      articleId={article.id}
+    />
+  ) : null}
+
+  <Link
+    href={`/articles/${article.id}/history`}
+    className="rounded-lg border px-4 py-2"
+  >
+    Version History
+  </Link>
+</div>
     </main>
   )
 }

@@ -955,3 +955,56 @@ Stores the latest/current article projection optimized for reads and search.
 #### ArticleVersion Table
 
 Stores immutable historical snapshots optimized for audit history and version browsing.
+
+
+## Version Service Layer
+
+Implemented centralized version-history workflows.
+
+### Current Responsibilities
+
+The version service manages:
+
+- version-history retrieval
+- historical snapshot loading
+- diff generation
+- historical visibility enforcement
+
+### Security Model
+
+Historical access permissions reuse the centralized article visibility rules to ensure draft privacy remains enforced across version history.
+
+## Version APIs
+
+Implemented:
+
+- version history retrieval
+- historical snapshot retrieval
+- dynamic diff retrieval
+
+### Diff Strategy
+
+Diffs are computed dynamically during read operations rather than being persisted directly.
+
+## Publish UI
+
+Implemented article publication UI controls.
+
+### Workflow
+
+Publication requests execute through dedicated publication APIs rather than generic update operations.
+
+This preserves explicit lifecycle-transition semantics.
+
+## Version History UI
+
+Implemented visible article version-history browsing.
+
+### Current Capabilities
+
+Users may now:
+
+- browse historical versions
+- inspect edit chronology
+- view editor attribution
+- navigate historical snapshots
